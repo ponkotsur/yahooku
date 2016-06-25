@@ -1,0 +1,226 @@
+2.1.0 / 2015-03-13
+
+* Bug fixes
+
+  * Thread safety with Sidekiq! thanks @evadne and @thbar ! https://github.com/seamusabshere/upsert/pull/47
+
+* Known issues
+
+  * speed_spec fails against activerecord-import on mysql... need some advice on properly testing it
+
+2.0.4 / 2015-01-27
+
+* Bug fixes
+
+  * Support mysql returning column info as symbols - thanks @pnomolos
+
+* Enhancements
+
+  * Travis and misc test fixes - thanks @raviolicode
+  * Backwards compat with 1.8 - thanks @raviolicode
+
+2.0.3 / 2013-11-27
+
+* Bug fixes
+
+  * Add parentheses to equality expressions
+
+* Enhancements
+
+  * On Postgres, use (A = B OR (A IS NULL AND B IS NULL)) instead of A IS NOT DISTINCT FROM B because the latter does not use indexes
+  * pass :eager_nullify => false as the third argument to Upsert#row to disable clearing of null HStore keys
+
+2.0.2 / 2013-11-06
+
+* Bug fixes
+
+  * Properly check for NULL equality when creating the UPSERT functions - thanks @pnomolos - https://github.com/seamusabshere/upsert/issues/25
+  * When using Mysql2 client (MRI), don't pass timezone to DateTime columns - thanks @kjeremy! - https://github.com/seamusabshere/upsert/issues/24
+
+2.0.1 / 2013-07-24
+
+* Bug fixes
+
+  * Rookie mistake - gsub!'ed an input arg, sorry. Blew up on a frozen string, thank goodness.
+
+2.0.0 / 2013-07-24
+
+* Breaking changes
+
+  * For Postgres Hstore, null keys are deliberately deleted - so there's no way to set "foo" => NULL - "foo" will just get deleted as a key
+  * Name merge functions "upsert1_2_0" instead of "upsert_"
+
+1.2.0 / 2013-04-04
+
+* Breaking changes
+
+  * columns named "created_at" and "created_on" will only be set if it's a new row - thanks @derekharmel! https://github.com/seamusabshere/upsert/pull/15
+
+* Enhancements
+
+  * Detect invalid columns passed in either selector or setter - inspired by @atandrau, thanks! https://github.com/seamusabshere/upsert/issues/18
+
+* Bug fixes
+
+  * Always convert symbols to strings when used as bind vars - thanks @towerhe! - https://github.com/seamusabshere/upsert/pull/16
+
+1.1.7 / 2013-01-15
+
+* Enhancements
+
+  * :assume_function_exists option to avoid creating same merge function over and over
+  * Don't die on first occurrence of "tuple concurrently updated"
+
+1.1.6 / 2012-12-20
+
+* Bug fixes
+
+  * Require pg-hstore >=1.1.1 which doesn't escape single quotes and backslashes when output is going to be used in a bind variable (as it is here)
+
+1.1.5 / 2012-12-10
+
+* Bug fixes
+
+  * Properly cast "timestamp without time zone" in postgres - thanks @markmarijnissen! https://github.com/seamusabshere/upsert/issues/11
+
+1.1.4 / 2012-12-06
+
+* Enhancements
+
+  * Use latest pg-hstore gem with standardized namespace
+
+1.1.3 / 2012-12-06
+
+* Bug fix
+
+  * Don't die/fail trying to update an HStore column that has reverted to NULL.
+
+1.1.2 / 2012-12-06
+
+* Enhancements
+
+  * Support for PostgreSQL's HStore
+
+1.1.1 / 2012-12-03
+
+* Bug fixes
+
+  * Removed inadvertent dependency on ActiveSupport - thanks @thbar! https://github.com/seamusabshere/upsert/issues/10
+
+1.1.0 / 2012-11-26
+
+* Enhancements
+
+  * Works on JRuby using bare-metal JDBC!
+  * Simplified.
+
+1.0.2 / 2012-11-12
+
+* Bug fixes
+
+  * Fix filenames - they were updated on an apparently case-insensitive setup. Thanks @ihough! (https://github.com/seamusabshere/upsert/pull/8)
+  * Deliberately drop MySQL procedures before creating them. Also thanks to @ihough!
+
+1.0.1 / 2012-11-07
+
+* Bug fixes
+
+  * Fix incorrect gem description
+
+1.0.0 / 2012-11-07
+
+* Breaking changes (well, not really)
+
+  * Not using INSERT ... ON DUPLICATE KEY UPDATE for MySQL!
+
+* Enhancements
+
+  * Replaced ON DUPLICATE KEY with a true merge function (procedure)
+  * Simplified code - buffering is no longer used anywhere
+  * Clarified documentation
+
+* Bug fixes
+
+  * MySQL upserts won't fail if you have a multi-key selector and no multi-column UNIQUE index to cover them (https://github.com/seamusabshere/upsert/issues/6)
+
+0.5.0 / 2012-09-21
+
+* Breaking changes (well, not really)
+
+  * "document" (as in the second argument to #row) has been renamed to "setter"!
+
+* Bug fixes
+
+  * If you say upsert({:name => 'Jerry', :color => 'red'}), make sure that it only affects rows really meeting those conditions
+  * Always sort selector and setter keys - i.e., column names - before doing anything with them
+  * Support PostgreSQL 9.1+
+  * Support MRI 1.8
+
+* Enhancements
+
+  * Slightly faster benchmarks for SQlite3 and MySQL
+  * Slightly slower on PostgreSQL (probably because the merge function requires more arguments), but more accurate
+  * Slightly clearer code structure
+  * Use bind parameters instead of quoting for PostgreSQL and SQLite3.
+  * Provide Upsert.clear_database_functions(connection) (currently only for PostgreSQL)
+  * Don't subclass String for Upset::Binary... hopefully save some strcpy()s?
+
+0.4.0 / 2012-09-04
+
+* Bug fixes
+
+  * Don't raise TooBig - rely on Mysql2 to complain about oversized packets
+
+* Enhancements
+
+  * Re-use PostgreSQL merge functions across connections, even outside of batch mode. Huzzah!
+  * For MySQL, increase speed for one-off upserts by not checking packet size
+  * Allow configuring Upsert.logger. Defaults to Rails.logger or Logger.new($stderr). If you set env var UPSERT_DEBUG=true then it will set log level to debug.
+
+0.3.4 / 2012-07-03
+
+* Bug fixes
+
+  * Allow upserting by auto-increment primary key (thanks @atandrau https://github.com/seamusabshere/upsert/issues/3)
+
+* Enhancements
+
+  * Make setter an optional argument
+
+0.3.3 / 2012-06-26
+
+* Bug fixes
+
+  * Properly quote table names - don't assume that everybody has ANSI_QUOTES turned on in MySQL :)
+
+0.3.2 / 2012-06-22
+
+* Enhancements
+
+  * Make sure ::PGconn is recognized as ::PG::Connection (thanks @joevandyk https://github.com/seamusabshere/upsert/issues/2)
+
+0.3.1 / 2012-06-21
+
+* Bug fixes
+
+  * On PostgreSQL, stop nullifying columns that weren't even involved in the upsert
+  * On SQLite, properly join WHERE conditions with ' AND ' instead of ','
+
+0.3.0 / 2012-06-21
+
+* Enhancements
+
+  * Remove all the sampling - just keep a cumulative total of sql bytes as we build up an ON DUPLICATE KEY UPDATE query.
+  * Deprecate Upsert.stream in favor of Upsert.batch (but provide an alias for backwards compat)
+
+0.2.2 / 2012-06-21
+
+* Bug fixes
+
+  * Correct and simplify how sql length is calculated when batching MySQL upserts.
+
+0.2.1 / 2012-06-21
+
+* Enhancements
+
+  * Added support for Ruby 1.8.7

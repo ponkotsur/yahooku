@@ -1,0 +1,21 @@
+current directory: C:/Rails/yahooku/vendor/bundle/ruby/2.1.0/gems/byebug-8.2.5/ext/byebug
+C:/Ruby21-x64/bin/ruby.exe -r ./siteconf20160514-7396-xjv4b0.rb extconf.rb
+creating Makefile
+
+current directory: C:/Rails/yahooku/vendor/bundle/ruby/2.1.0/gems/byebug-8.2.5/ext/byebug
+make "DESTDIR=" clean
+
+current directory: C:/Rails/yahooku/vendor/bundle/ruby/2.1.0/gems/byebug-8.2.5/ext/byebug
+make "DESTDIR="
+generating byebug-x64-mingw32.def
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.so
+
+current directory: C:/Rails/yahooku/vendor/bundle/ruby/2.1.0/gems/byebug-8.2.5/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.so ./.gem.20160514-7396-1wov42m/byebug
+installing default byebug libraries

@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <td>
+      <%= form_tag("/groups", :method => :post) do %>
+        <%= text_field :params, :name %>
+        <%= submit_tag "登録" %>
+      <% end %>
+    </td>
+  </tr>
+  <% @groups.each do |group| %>
+    <tr>
+      <td>
+        <%= link_to(group.name , "/groups/#{group.id}") %>
+      </td>
+    </tr>
+  <% end %>
+</table>

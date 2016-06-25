@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Yahooku</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<header>
+  <div class='trimming' ></div>
+</header>
+<div class='navi-bar'>
+  <div class='navi-bar-contents'>
+      <a><div class='navi-group-button'>グループ</div></a>
+      <a><div class='navi-keywords-button'>キーワード</div></a>
+  </div>
+</div>
+<%= yield %>
+
+</body>
+</html>

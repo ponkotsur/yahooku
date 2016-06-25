@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  start_price: 1
+  current_price: 1
+  prompt_decision_price: 1
+  start_date: 2016-05-10 12:45:25
+  end_date: 2016-05-10 12:45:25
+  remaining_time: MyString
+  exhibitor_name: MyString
+  exhibitor_evaluation: 1
+  status: MyString
+  bit: 1
+  auction_id: MyString
+
+two:
+  title: MyString
+  start_price: 1
+  current_price: 1
+  prompt_decision_price: 1
+  start_date: 2016-05-10 12:45:25
+  end_date: 2016-05-10 12:45:25
+  remaining_time: MyString
+  exhibitor_name: MyString
+  exhibitor_evaluation: 1
+  status: MyString
+  bit: 1
+  auction_id: MyString

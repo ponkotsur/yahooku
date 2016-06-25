@@ -1,0 +1,140 @@
+<div id='modal'>
+  <div id='modal-overlay' >
+    <div id='modal-contents'></div>
+  </div>
+</div>
+
+<div class='keyword_create_contents'>
+  <%= form_tag("/groups/#{@group.id}/keywords", :method => :post) do %>
+    <%= text_field :params, :keyword %></br>
+    <%= submit_tag "キーワードを追加する" %>
+  <% end %>
+</div>
+
+<div class='keyword_contents'>
+  <table>
+  <% if @keywords %>
+    <thead>
+      <th>
+        キーワード
+      </th>
+      <th>
+        削除
+      </th>
+    </thead>
+    <tbody>
+      <% @keywords.each do |keyword| %>
+        <%= form_tag("/groups/#{@group.id}/keywords/#{keyword.id}", :method => :patch) do %>
+          <tr>
+            <td><%= text_field_tag :text, keyword.word %></td>
+            <td><%= submit_tag "修正", :name => 'keyword_correction' %></td>
+            <td><%= submit_tag "削除", :name =>'keyword_delete' %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+</div>
+
+<div class='update_button'>
+<%= form_tag("/groups/#{params[:id]}/scrape", :method => :post) do %>
+  <%= submit_tag("更新") %>
+<% end %>
+  </div>
+
+<div class='navi_bar' >
+  <table >
+    <tr>
+      <td>
+        <a href="/groups/" >マイリスト一覧</a>
+      </td>
+      <td>
+        <a href="" >キーワード追加</a>
+      </td>
+      <td>
+      </td>
+      <td>
+        <a href="" >ログアウト</a>
+      </td>
+    </td>
+  </table>
+</div>
+
+<div>
+  <table class='sort_products_table' >
+    <%= form_tag("/groups/#{params[:id]}", :method => :post) do %>
+    <tr>
+      <td class='sort_products_header'>最優先ソート順：</td>
+      <td class='sort_products_element'>
+        <% if @condition1 != "" || @condition1 != nil %>
+          <%= collection_select(:conditions, :condition1, Condition.all, :sql, :title, :include_blank => true, :selected => @condition1) %>
+        <% else %>
+          <%= collection_select(:conditions, :condition1, Condition.all, :sql, :title, :include_blank => true) %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class='sort_products_header'>第２ソート順：</td>
+      <td class='sort_products_element'>
+        <% if @condition2 != "" || @condition2 != nil %>
+        <%= collection_select(:conditions, :condition2, Condition.all, :sql, :title, :include_blank => true, :selected => @condition2) %>
+        <% else %>
+          <%= collection_select(:conditions, :condition2, Condition.all, :sql, :title, :include_blank => true) %>
+        <% end %> 
+      </td>
+    </tr>
+    <tr>
+      <td class='sort_products_header'>第３ソート順：</td>
+      <td class='sort_products_element'>
+      <% if @condition3 != "" || @condition3 != nil %>
+        <%= collection_select(:conditions, :condition3, Condition.all, :sql, :title, :include_blank => true, :selected => @condition3) %>
+      <% else %>
+        <%= collection_select(:conditions, :condition3, Condition.all, :sql, :title, :include_blank => true) %>
+      <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class='sort_products_header'>入札数0を除く</td>
+      <td>
+        <% if @except_bit != nil && @except_bit == 1 %>
+          <%= check_box :conditions, :except_bit, {:checked => true} %>
+        <% else %>
+          <%= check_box :conditions, :except_bit, {:checked => false} %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan='2' class='sort_products_button'><%= submit_tag "条件を指定する"%></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+
+<table class='products_table' >
+  <thead>
+    <tr class='products_table_header'>
+      <th>商品名</th>
+      <th>現在価格</th>
+      <th>即決価格</th>
+      <th>出品者</th>
+      <th>入札件数</th>
+      <th>残り時間</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @products %>
+      <% @products.each_with_index do |product,idx| %>
+        <tr class='content_<%= idx % 2 == 0 ? "even" : "odd" %>'>
+          <td class='content_title'><%= link_to( product.title,"http://auctions.yahoo.co.jp/jp/auction/#{product.auction_id}") %></td>
+          <td><%= product.current_price.to_s.reverse.gsub( /(\d{3})(?=\d)/, '\1,').reverse %></td>
+          <td><%= product.prompt_decision_price.to_s.reverse.gsub( /(\d{3})(?=\d)/, '\1,').reverse %></td>
+          <td><%= product.exhibitor_name %></td>
+          <td><%= product.bit %></td>
+          <td><%= product.remaining_time %><%= product.remaining_time_unit %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
